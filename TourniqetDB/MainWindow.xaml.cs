@@ -91,51 +91,94 @@ namespace TourniqetDB
             tbSId.Text = string.Empty;
             lblHash.Content = string.Empty;
         }
-        void RefreshStudAccList() 
+        void RefreshStudAccList()
         {
             liAccounts.Items.Clear();
             foreach (var sa in new StudentAccountContext().StudentAccounts)
-            {
                 liAccounts.Items.Add(sa.ToString());
-            }
-            ClearForm();
         }
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
-            var db = new StudentAccountContext();
-            //int sid;
-            //int.TryParse(tbSId.Text, out sid);
-            //if (SIDUnique(sid))
+            if (EmailValid(tbSEmail.Text))
             {
-                var acc = new StudentAccount() { /*Id = sid, */Email = tbSEmail.Text, Soil = tbSEmailSoil.Text };
-                db.StudentAccounts.Add(acc);
-                db.SaveChanges();
-            }
-            //else MessageBox.Show($"User with StudentID-{sid} already exists");
+                if (LocalEmail(tbSEmail.Text))
+                {
 
+                    var db = new StudentAccountContext();
+                    //int sid;
+                    //int.TryParse(tbSId.Text, out sid);
+                    //if (SIDUnique(sid))
+                    {
+                        var acc = new StudentAccount() { /*Id = sid, */Email = tbSEmail.Text, Soil = tbSEmailSoil.Text };
+                        db.StudentAccounts.Add(acc);
+                        db.SaveChanges();
+                    }
+                    //else MessageBox.Show($"User with StudentID-{sid} already exists");
+                    ClearForm();
+                }
+                else MessageBox.Show("You are using foreign email");
+            }
+            else MessageBox.Show("Email is not formated correctly");
             RefreshStudAccList();
         }
-
+        bool EmailValid(string email)
+        {
+            try
+            {
+                var emailAddress = new System.Net.Mail.MailAddress(email);
+            }
+            catch { return false; }
+            bool formatInvalid = !email.Contains('.') || email.StartsWith(".") || email.StartsWith("@") || email.EndsWith(".") || email.EndsWith("@");
+            if (formatInvalid)
+                return false;
+            return true;
+        }
+        bool LocalEmail(string email)
+        {
+            if (email.EndsWith("@nuwm.edu.ua"))
+                return true;
+            return false;
+        }
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            var db = new StudentAccountContext();
-            var acc = db.StudentAccounts.ToList()[liAccounts.SelectedIndex];
-            acc.Email = tbSEmail.Text;
-            acc.Soil = tbSEmailSoil.Text;
-            db.Entry(acc).State = System.Data.Entity.EntityState.Modified;
-            db.SaveChanges();
-
+            if (EmailValid(tbSEmail.Text))
+            {
+                if (LocalEmail(tbSEmail.Text))
+                {
+                    if (MessageBox.Show($"Are you sure to update student data on SID-{GetUIAccounts()[liAccounts.SelectedIndex].Id}?", "UPDATE REQUESTED", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        var db = new StudentAccountContext();
+                        var acc = db.StudentAccounts.ToList()[liAccounts.SelectedIndex];
+                        acc.Email = tbSEmail.Text;
+                        acc.Soil = tbSEmailSoil.Text;
+                        db.Entry(acc).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    ClearForm();
+                }
+                else MessageBox.Show("You are using foreign email");
+            }
+            else MessageBox.Show("Email is not formated correctly");
             RefreshStudAccList();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var db = new StudentAccountContext();
-            db.StudentAccounts.Remove(db.StudentAccounts.ToList()[liAccounts.SelectedIndex]);
-            //db.StudentAccounts.Remove(db.StudentAccounts.Single(x => x.Id == 1));
-            db.SaveChanges();
-
+            if (MessageBox.Show($"Are you sure to delete student on SID-{GetUIAccounts()[liAccounts.SelectedIndex].Id}?", "DELETE REQUESTED", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                var db = new StudentAccountContext();
+                db.StudentAccounts.Remove(db.StudentAccounts.ToList()[liAccounts.SelectedIndex]);
+                //db.StudentAccounts.Remove(db.StudentAccounts.Single(x => x.Id == 1));
+                db.SaveChanges();
+                ClearForm();
+            }
             RefreshStudAccList();
+        }
+
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            liAccounts.SelectedIndex = -1;
+            ClearForm();
         }
     }
 }

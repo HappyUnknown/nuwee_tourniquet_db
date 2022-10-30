@@ -58,10 +58,10 @@
                 <Viewbox Grid.Row="3" Grid.Column="0">
                     <Label Content="Hash" Style="{StaticResource propName}"/>
                 </Viewbox>
-                <TextBox Grid.Row="0" Grid.Column="1" Name="tbSId" ToolTip="ID" IsReadOnly="True"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Name="tbSEmail" ToolTip="Elektronka"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Name="tbSEmailSoil" ToolTip="Soil"/>
-                <Label Grid.Row="3" Grid.Column="1" Name="lblHash" ToolTip="Hash"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="tbSId" IsEnabled="False"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Name="tbSEmail"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Name="tbSEmailSoil"/>
+                <Label Grid.Row="3" Grid.Column="1" Name="lblHash"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="1">
@@ -69,10 +69,12 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnCreate" Content="Create" Grid.Column="0" Click="btnCreate_Click"/>
-            <Button x:Name="btnUpdate" Content="Update" Grid.Column="1" Click="btnUpdate_Click"/>
-            <Button x:Name="btnDelete" Content="Delete" Grid.Column="2" Click="btnDelete_Click"/>
+            <Button x:Name="btnReset" Content="Reset" Grid.Column="0" Click="btnReset_Click"/>
+            <Button x:Name="btnCreate" Content="Create" Grid.Column="1" Click="btnCreate_Click"/>
+            <Button x:Name="btnUpdate" Content="Update" Grid.Column="2" Click="btnUpdate_Click"/>
+            <Button x:Name="btnDelete" Content="Delete" Grid.Column="3" Click="btnDelete_Click"/>
         </Grid>
     </Grid>
 </Window>
