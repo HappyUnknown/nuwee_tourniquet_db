@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TourniqetDB.Classes;
+using TourniqetDB.Classes.Contexts;
 
 namespace TourniqetDB
 {
@@ -24,16 +25,26 @@ namespace TourniqetDB
         public MainWindow()
         {
             InitializeComponent();
-            List<StudentAccount> accounts = new List<StudentAccount>()
+            try
             {
-                new StudentAccount(){Id=1,Email="danchenkov_ak20@gmail.com",Encoding="X2" },
-                new StudentAccount(){Id=2,Email="demchuk_ak20@gmail.com",Encoding="X2" },
-                new StudentAccount(){Id=3,Email="zhuranskyi_ak20@gmail.com",Encoding="X2" }
-            };
-            foreach (StudentAccount sa in accounts)
-            {
-                liAccounts.Items.Add(sa.ToString());
+                //List<StudentAccount> accounts = new List<StudentAccount>()
+                //{
+                //    new StudentAccount(){Id=1,Email="danchenkov_ak20@gmail.com",Encoding="X2" },
+                //    new StudentAccount(){Id=2,Email="demchuk_ak20@gmail.com",Encoding="X2" },
+                //    new StudentAccount(){Id=3,Email="zhuranskyi_ak20@gmail.com",Encoding="X2" }
+                //};
+                var db = new StudentAccountContext();
+                //foreach (var acc in accounts)
+                //{
+                //    db.StudentAccounts.Add(acc);
+                //}
+                db.SaveChanges();
+                foreach (var sa in new StudentAccountContext().StudentAccounts)
+                {
+                    liAccounts.Items.Add(sa.ToString());
+                }
             }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void liAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -45,6 +56,22 @@ namespace TourniqetDB
             tbSEmail.Text = args[1];
             tbSEmailSoil.Text = args[2];
             lblHash.Content = Classes.MD5Hasher.Encrypt(tbSEmail.Text, tbSEmailSoil.Text);
+        }
+
+        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        {
+            var db = new StudentAccountContext();
+            int sid;
+            int.TryParse(tbSId.Text, out sid);
+            var acc = new StudentAccount() { Id = sid, Email = tbSEmail.Text, Soil = tbSEmailSoil.Text };
+            db.StudentAccounts.Add(acc);
+            db.SaveChanges();
+
+            liAccounts.Items.Clear();
+            foreach (var sa in new StudentAccountContext().StudentAccounts)
+            {
+                liAccounts.Items.Add(sa.ToString());
+            }
         }
     }
 }
