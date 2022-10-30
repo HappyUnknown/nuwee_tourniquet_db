@@ -57,16 +57,42 @@ namespace TourniqetDB
             tbSEmailSoil.Text = args[2];
             lblHash.Content = Classes.MD5Hasher.Encrypt(tbSEmail.Text, tbSEmailSoil.Text);
         }
-
+        List<StudentAccount> GetUIAccounts()
+        {
+            List<StudentAccount> uiStudents = new List<StudentAccount>();
+            string[] liUI = new string[liAccounts.Items.Count];
+            for (int i = 0; i < liUI.Length; i++)
+            {
+                string[] args = liAccounts.Items[i].ToString().Split('-');
+                for (int ai = 0; ai < args.Length; ai++)
+                    args[ai] = args[ai].Trim(' ');
+                int sid;
+                int.TryParse(args[0], out sid);
+                StudentAccount sa = new StudentAccount() { Id = sid, Email = args[1], Soil = args[2] };
+                uiStudents.Add(sa);
+            }
+            return uiStudents;
+        }
+        bool SIDUnique(int id)
+        {
+            var uiAccounts = GetUIAccounts();
+            for (int i = 0; i < uiAccounts.Count; i++)
+                if (uiAccounts[i].Id == id)
+                    return false;
+            return true;
+        }
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
             var db = new StudentAccountContext();
             int sid;
             int.TryParse(tbSId.Text, out sid);
-            var acc = new StudentAccount() { Id = sid, Email = tbSEmail.Text, Soil = tbSEmailSoil.Text };
-            db.StudentAccounts.Add(acc);
-            db.SaveChanges();
-
+            if (SIDUnique(sid))
+            {
+                var acc = new StudentAccount() { Id = sid, Email = tbSEmail.Text, Soil = tbSEmailSoil.Text };
+                db.StudentAccounts.Add(acc);
+                db.SaveChanges();
+            }
+            else MessageBox.Show($"User with StudentID-{sid} already exists");
             liAccounts.Items.Clear();
             foreach (var sa in new StudentAccountContext().StudentAccounts)
             {
