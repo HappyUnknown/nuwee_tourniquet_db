@@ -49,13 +49,16 @@ namespace TourniqetDB
 
         private void liAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string[] args = liAccounts.Items[liAccounts.SelectedIndex].ToString().Split('-');
-            for (int i = 0; i < args.Length; i++)
-                args[i] = args[i].Trim(' ');
-            tbSId.Text = args[0];
-            tbSEmail.Text = args[1];
-            tbSEmailSoil.Text = args[2];
-            lblHash.Content = Classes.MD5Hasher.Encrypt(tbSEmail.Text, tbSEmailSoil.Text);
+            if (liAccounts.SelectedIndex >= 0)//If list clearence hasn't been launched
+            {
+                string[] args = liAccounts.Items[liAccounts.SelectedIndex].ToString().Split('-');
+                for (int i = 0; i < args.Length; i++)
+                    args[i] = args[i].Trim(' ');
+                tbSId.Text = args[0];
+                tbSEmail.Text = args[1];
+                tbSEmailSoil.Text = args[2];
+                lblHash.Content = Classes.MD5Hasher.Encrypt(tbSEmail.Text, tbSEmailSoil.Text);
+            }
         }
         List<StudentAccount> GetUIAccounts()
         {
@@ -81,7 +84,7 @@ namespace TourniqetDB
                     return false;
             return true;
         }
-        void ClearForm() 
+        void ClearForm()
         {
             tbSEmail.Text = string.Empty;
             tbSEmailSoil.Text = string.Empty;
@@ -100,6 +103,23 @@ namespace TourniqetDB
                 db.SaveChanges();
             }
             //else MessageBox.Show($"User with StudentID-{sid} already exists");
+            liAccounts.Items.Clear();
+            foreach (var sa in new StudentAccountContext().StudentAccounts)
+            {
+                liAccounts.Items.Add(sa.ToString());
+            }
+            ClearForm();
+        }
+
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            var db = new StudentAccountContext();
+            var acc = db.StudentAccounts.ToList()[liAccounts.SelectedIndex];
+            acc.Email = tbSEmail.Text;
+            acc.Soil = tbSEmailSoil.Text;
+            db.Entry(acc).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+
             liAccounts.Items.Clear();
             foreach (var sa in new StudentAccountContext().StudentAccounts)
             {

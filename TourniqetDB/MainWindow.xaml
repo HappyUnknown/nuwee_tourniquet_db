@@ -51,7 +51,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button x:Name="btnCreate" Content="Create" Grid.Column="0" Click="btnCreate_Click"/>
-            <Button x:Name="btnUpdate" Content="Update" Grid.Column="1"/>
+            <Button x:Name="btnUpdate" Content="Update" Grid.Column="1" Click="btnUpdate_Click"/>
             <Button x:Name="btnDelete" Content="Delete" Grid.Column="2"/>
         </Grid>
     </Grid>
