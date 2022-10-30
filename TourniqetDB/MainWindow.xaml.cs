@@ -81,23 +81,31 @@ namespace TourniqetDB
                     return false;
             return true;
         }
+        void ClearForm() 
+        {
+            tbSEmail.Text = string.Empty;
+            tbSEmailSoil.Text = string.Empty;
+            tbSId.Text = string.Empty;
+            lblHash.Content = string.Empty;
+        }
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
             var db = new StudentAccountContext();
-            int sid;
-            int.TryParse(tbSId.Text, out sid);
-            if (SIDUnique(sid))
+            //int sid;
+            //int.TryParse(tbSId.Text, out sid);
+            //if (SIDUnique(sid))
             {
-                var acc = new StudentAccount() { Id = sid, Email = tbSEmail.Text, Soil = tbSEmailSoil.Text };
+                var acc = new StudentAccount() { /*Id = sid, */Email = tbSEmail.Text, Soil = tbSEmailSoil.Text };
                 db.StudentAccounts.Add(acc);
                 db.SaveChanges();
             }
-            else MessageBox.Show($"User with StudentID-{sid} already exists");
+            //else MessageBox.Show($"User with StudentID-{sid} already exists");
             liAccounts.Items.Clear();
             foreach (var sa in new StudentAccountContext().StudentAccounts)
             {
                 liAccounts.Items.Add(sa.ToString());
             }
+            ClearForm();
         }
     }
 }

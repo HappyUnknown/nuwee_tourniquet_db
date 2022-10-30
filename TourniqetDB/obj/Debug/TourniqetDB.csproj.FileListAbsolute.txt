@@ -16,7 +16,6 @@ E:\FILES\GENERAL-PURPOSE\PROJECTS\PROGRAMMING\Source - Visual Studio\Author Apps
 E:\FILES\GENERAL-PURPOSE\PROJECTS\PROGRAMMING\Source - Visual Studio\Author Apps\TourniqetDB\TourniqetDB\bin\Debug\EntityFramework.SqlServer.dll
 E:\FILES\GENERAL-PURPOSE\PROJECTS\PROGRAMMING\Source - Visual Studio\Author Apps\TourniqetDB\TourniqetDB\bin\Debug\EntityFramework.xml
 E:\FILES\GENERAL-PURPOSE\PROJECTS\PROGRAMMING\Source - Visual Studio\Author Apps\TourniqetDB\TourniqetDB\bin\Debug\EntityFramework.SqlServer.xml
-E:\FILES\GENERAL-PURPOSE\PROJECTS\PROGRAMMING\Source - Visual Studio\Author Apps\TourniqetDB\TourniqetDB\obj\Debug\TourniqetDB.csproj.AssemblyReference.cache
 E:\FILES\GENERAL-PURPOSE\PROJECTS\PROGRAMMING\Source - Visual Studio\Author Apps\TourniqetDB\TourniqetDB\obj\Debug\TourniqetDB.csproj.CopyComplete
 E:\FILES\GENERAL-PURPOSE\PROJECTS\PROGRAMMING\Source - Visual Studio\Author Apps\TourniqetDB\TourniqetDB\obj\Debug\TourniqetDB.Migrations.InitialCreate.resources
 E:\FILES\GENERAL-PURPOSE\PROJECTS\PROGRAMMING\Source - Visual Studio\Author Apps\TourniqetDB\TourniqetDB\obj\Debug\TourniqetDB.Migrations.IncorrectEncodingrenamedtoSoil.resources
