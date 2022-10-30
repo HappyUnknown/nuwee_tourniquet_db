@@ -99,27 +99,31 @@ namespace TourniqetDB
         }
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
-            if (EmailValid(tbSEmail.Text))
+            try
             {
-                if (LocalEmail(tbSEmail.Text))
+                if (EmailValid(tbSEmail.Text))
                 {
-
-                    var db = new StudentAccountContext();
-                    //int sid;
-                    //int.TryParse(tbSId.Text, out sid);
-                    //if (SIDUnique(sid))
+                    if (LocalEmail(tbSEmail.Text))
                     {
-                        var acc = new StudentAccount() { /*Id = sid, */Email = tbSEmail.Text, Soil = tbSEmailSoil.Text };
-                        db.StudentAccounts.Add(acc);
-                        db.SaveChanges();
+
+                        var db = new StudentAccountContext();
+                        //int sid;
+                        //int.TryParse(tbSId.Text, out sid);
+                        //if (SIDUnique(sid))
+                        {
+                            var acc = new StudentAccount() { /*Id = sid, */Email = tbSEmail.Text, Soil = tbSEmailSoil.Text };
+                            db.StudentAccounts.Add(acc);
+                            db.SaveChanges();
+                        }
+                        //else MessageBox.Show($"User with StudentID-{sid} already exists");
+                        ClearForm();
                     }
-                    //else MessageBox.Show($"User with StudentID-{sid} already exists");
-                    ClearForm();
+                    else MessageBox.Show("You are using foreign email");
                 }
-                else MessageBox.Show("You are using foreign email");
+                else MessageBox.Show("Email is not formated correctly");
+                RefreshStudAccList();
             }
-            else MessageBox.Show("Email is not formated correctly");
-            RefreshStudAccList();
+            catch (Exception ex) { MessageBox.Show($"btnCreate_Click global error: {ex.Message}"); }
         }
         bool EmailValid(string email)
         {
@@ -141,44 +145,57 @@ namespace TourniqetDB
         }
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            if (EmailValid(tbSEmail.Text))
+            try
             {
-                if (LocalEmail(tbSEmail.Text))
+                if (EmailValid(tbSEmail.Text))
                 {
-                    if (MessageBox.Show($"Are you sure to update student data on SID-{GetUIAccounts()[liAccounts.SelectedIndex].Id}?", "UPDATE REQUESTED", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    if (LocalEmail(tbSEmail.Text))
                     {
-                        var db = new StudentAccountContext();
-                        var acc = db.StudentAccounts.ToList()[liAccounts.SelectedIndex];
-                        acc.Email = tbSEmail.Text;
-                        acc.Soil = tbSEmailSoil.Text;
-                        db.Entry(acc).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
+                        if (MessageBox.Show($"Are you sure to update student data on SID-{GetUIAccounts()[liAccounts.SelectedIndex].Id}?", "UPDATE REQUESTED", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        {
+                            var db = new StudentAccountContext();
+                            var acc = db.StudentAccounts.ToList()[liAccounts.SelectedIndex];
+                            acc.Email = tbSEmail.Text;
+                            acc.Soil = tbSEmailSoil.Text;
+                            db.Entry(acc).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                        ClearForm();
                     }
-                    ClearForm();
+                    else MessageBox.Show("You are using foreign email");
                 }
-                else MessageBox.Show("You are using foreign email");
+                else MessageBox.Show("Email is not formated correctly");
+                RefreshStudAccList();
             }
-            else MessageBox.Show("Email is not formated correctly");
-            RefreshStudAccList();
+            catch (Exception ex) { MessageBox.Show($"btnUpdate_Click global error: {ex.Message}"); }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show($"Are you sure to delete student on SID-{GetUIAccounts()[liAccounts.SelectedIndex].Id}?", "DELETE REQUESTED", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            try
             {
-                var db = new StudentAccountContext();
-                db.StudentAccounts.Remove(db.StudentAccounts.ToList()[liAccounts.SelectedIndex]);
-                //db.StudentAccounts.Remove(db.StudentAccounts.Single(x => x.Id == 1));
-                db.SaveChanges();
-                ClearForm();
+                if (MessageBox.Show($"Are you sure to delete student on SID-{GetUIAccounts()[liAccounts.SelectedIndex].Id}?", "DELETE REQUESTED", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    var db = new StudentAccountContext();
+                    db.StudentAccounts.Remove(db.StudentAccounts.ToList()[liAccounts.SelectedIndex]);
+                    //db.StudentAccounts.Remove(db.StudentAccounts.Single(x => x.Id == 1));
+                    db.SaveChanges();
+                    ClearForm();
+                }
+                RefreshStudAccList();
             }
-            RefreshStudAccList();
+            catch (Exception ex) { MessageBox.Show($"btnDelete_Click global error: {ex.Message}"); }
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            liAccounts.SelectedIndex = -1;
-            ClearForm();
+            try
+            {
+
+                liAccounts.SelectedIndex = -1;
+                ClearForm();
+            }
+            catch (Exception ex) { MessageBox.Show($"btnReset_Click global error: {ex.Message}"); }
         }
     }
 }
