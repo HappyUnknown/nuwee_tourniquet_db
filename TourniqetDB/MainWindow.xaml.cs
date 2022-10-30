@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TourniqetDB.Classes;
 
 namespace TourniqetDB
 {
@@ -23,9 +24,16 @@ namespace TourniqetDB
         public MainWindow()
         {
             InitializeComponent();
-            liAccounts.Items.Add("1 - danchenkov_ak20@gmail.com - X2");
-            liAccounts.Items.Add("2 - demchuk_ak20@gmail.com - X2");
-            liAccounts.Items.Add("3 - zhuranskyi_ak20@gmail.com - X2");
+            List<StudentAccount> accounts = new List<StudentAccount>()
+            {
+                new StudentAccount(){Id=1,Email="danchenkov_ak20@gmail.com",Encoding="X2" },
+                new StudentAccount(){Id=2,Email="demchuk_ak20@gmail.com",Encoding="X2" },
+                new StudentAccount(){Id=3,Email="zhuranskyi_ak20@gmail.com",Encoding="X2" }
+            };
+            foreach (StudentAccount sa in accounts)
+            {
+                liAccounts.Items.Add(sa.ToString());
+            }
         }
 
         private void liAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
