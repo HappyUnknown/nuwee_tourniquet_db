@@ -91,6 +91,15 @@ namespace TourniqetDB
             tbSId.Text = string.Empty;
             lblHash.Content = string.Empty;
         }
+        void RefreshStudAccList() 
+        {
+            liAccounts.Items.Clear();
+            foreach (var sa in new StudentAccountContext().StudentAccounts)
+            {
+                liAccounts.Items.Add(sa.ToString());
+            }
+            ClearForm();
+        }
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
             var db = new StudentAccountContext();
@@ -103,12 +112,8 @@ namespace TourniqetDB
                 db.SaveChanges();
             }
             //else MessageBox.Show($"User with StudentID-{sid} already exists");
-            liAccounts.Items.Clear();
-            foreach (var sa in new StudentAccountContext().StudentAccounts)
-            {
-                liAccounts.Items.Add(sa.ToString());
-            }
-            ClearForm();
+
+            RefreshStudAccList();
         }
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
@@ -120,12 +125,17 @@ namespace TourniqetDB
             db.Entry(acc).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
 
-            liAccounts.Items.Clear();
-            foreach (var sa in new StudentAccountContext().StudentAccounts)
-            {
-                liAccounts.Items.Add(sa.ToString());
-            }
-            ClearForm();
+            RefreshStudAccList();
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            var db = new StudentAccountContext();
+            db.StudentAccounts.Remove(db.StudentAccounts.ToList()[liAccounts.SelectedIndex]);
+            //db.StudentAccounts.Remove(db.StudentAccounts.Single(x => x.Id == 1));
+            db.SaveChanges();
+
+            RefreshStudAccList();
         }
     }
 }

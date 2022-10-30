@@ -19,6 +19,10 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
+        <Style x:Key="propName" TargetType="Label">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -32,16 +36,32 @@
             </Grid.ColumnDefinitions>
             <ListView x:Name="liAccounts" Grid.Column="0" SelectionChanged="liAccounts_SelectionChanged"/>
             <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" Name="tbSId" ToolTip="ID"/>
-                <TextBox Grid.Row="1" Name="tbSEmail" ToolTip="Elektronka"/>
-                <TextBox Grid.Row="2" Name="tbSEmailSoil" ToolTip="Soil"/>
-                <Label Grid.Row="3" Name="lblHash" ToolTip="Hash"/>
+                <Viewbox Grid.Row="0" Grid.Column="0">
+                    <Label Content="ID" Style="{StaticResource propName}"/>
+                </Viewbox>
+                <Viewbox Grid.Row="1" Grid.Column="0">
+                    <Label Content="Email" Style="{StaticResource propName}"/>
+                </Viewbox>
+                <Viewbox Grid.Row="2" Grid.Column="0">
+                    <Label Content="Soil" Style="{StaticResource propName}"/>
+                </Viewbox>
+                <Viewbox Grid.Row="3" Grid.Column="0">
+                    <Label Content="Hash" Style="{StaticResource propName}"/>
+                </Viewbox>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="tbSId" ToolTip="ID" IsReadOnly="True"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Name="tbSEmail" ToolTip="Elektronka"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Name="tbSEmailSoil" ToolTip="Soil"/>
+                <Label Grid.Row="3" Grid.Column="1" Name="lblHash" ToolTip="Hash"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="1">
@@ -52,7 +72,7 @@
             </Grid.ColumnDefinitions>
             <Button x:Name="btnCreate" Content="Create" Grid.Column="0" Click="btnCreate_Click"/>
             <Button x:Name="btnUpdate" Content="Update" Grid.Column="1" Click="btnUpdate_Click"/>
-            <Button x:Name="btnDelete" Content="Delete" Grid.Column="2"/>
+            <Button x:Name="btnDelete" Content="Delete" Grid.Column="2" Click="btnDelete_Click"/>
         </Grid>
     </Grid>
 </Window>
